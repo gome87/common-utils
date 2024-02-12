@@ -62,6 +62,5 @@ public class OfficeController {
 		XlsxToHtml convert = new XlsxToHtml();
 		convert.readExcelToHtml("C:\\fileupload\\convert_after\\대학강의시간표.xls", "C:\\fileupload\\convert_html\\대학강의시간표.html", false, "xlsx", "대학강의시간표");
 		//convert.readExcelToHtml("C:\\fileupload\\convert_after\\2023학년도 1학기 생활디자인학과 시간표(안).xlsx", "C:\\fileupload\\convert_html\\2023학년도 1학기 생활디자인학과 시간표(안).html", true, "xlsx", "2023학년도 1학기 생활디자인학과 시간표(안)");
-
 	}
 }
