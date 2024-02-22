@@ -66,7 +66,7 @@ public class XlsxToHtml {
 					HSSFWorkbook hWb = (HSSFWorkbook) wb;
 					htmlExcel = this.getExcelInfo(hWb, isWithStyle, stylemap);
 				}
-				writeFile(htmlExcel, htmlPosition, stylemap, attname);
+				this.writeFile(htmlExcel, htmlPosition, stylemap, attname);
 			}
 		} catch (Exception e) {
 			LOG.error(">>>>>>>>>> readExcelToHtml = {}", e.getMessage());
@@ -142,13 +142,13 @@ public class XlsxToHtml {
 			for(int i=0; i<list.size(); i++) {
 				List<String> col = (List)list.get(i);
 				if(col == null || col.size() == 0) {
-					sb.append("<tr><td></td></tr>");
+					sb.append("<tr><td ></td></tr>");
 				}
 				sb.append("<tr>");
 				for(int j=0;j<col.size(); j++) {
 					String value = (String) col.get(j);
 					if(value == null || "".equals(value)) {
-						sb.append("<td></td>");
+						sb.append("<td> </td>");
 						continue;
 					} else {
 						sb.append("<td>"+value+"</td>");
@@ -183,7 +183,7 @@ public class XlsxToHtml {
 			if(i==0) {
 				ulsb.append("<li id='li_" + i + "' class='cur' onclick='changetab(" + i + ")'>" + sheetName + "</li>");
 			} else {
-				ulsb.append("<li id='li_" + i + "' onclick='changettab(" + i + ")'>" + sheetName + "</li>");
+				ulsb.append("<li id='li_" + i + "' onclick='changetab(" + i + ")'>" + sheetName + "</li>");
 			}
 			int lastRowNum = sheet.getLastRowNum();
 			Map<String, String> map[] = this.getRowSpanColSpanMap(sheet);
@@ -247,7 +247,7 @@ public class XlsxToHtml {
 			for(int rowNum = sheet.getFirstRowNum(); rowNum <= maxRowNum; rowNum++) {
 				row = sheet.getRow(rowNum);
 				if(row == null) {
-					sb.append("<tr><td></td></td>");
+					sb.append("<tr><td ></td></td>");
 					continue;
 				}
 				sb.append("<tr>");
@@ -256,7 +256,7 @@ public class XlsxToHtml {
 				for(int colNum = 0; colNum <= maxColNum; colNum++) {
 					cell = row.getCell(colNum);
 					if(cell == null) {
-						sb.append("<td></td>");
+						sb.append("<td> </td>");
 						continue;
 					}
 					String stringValue = this.getCellValue(cell);
@@ -272,7 +272,7 @@ public class XlsxToHtml {
 						map[1].remove(rowNum + "," + colNum);
 						continue;
 					} else {
-						sb.append("<td");
+						sb.append("<td ");
 					}
 
 					if(isWithStyle) {
@@ -436,8 +436,8 @@ public class XlsxToHtml {
 				}
 				_style += this.getBorderStyle(0, cellStyle.getBorderTop().getCode(), ((XSSFCellStyle) cellStyle).getTopBorderXSSFColor());
 				_style += this.getBorderStyle(1, cellStyle.getBorderRight().getCode(), ((XSSFCellStyle) cellStyle).getRightBorderXSSFColor());
-				_style += this.getBorderStyle(3, cellStyle.getBorderLeft().getCode(), ((XSSFCellStyle) cellStyle).getLeftBorderXSSFColor());
 				_style += this.getBorderStyle(2, cellStyle.getBorderBottom().getCode(), ((XSSFCellStyle) cellStyle).getBottomBorderXSSFColor());
+				_style += this.getBorderStyle(3, cellStyle.getBorderLeft().getCode(), ((XSSFCellStyle) cellStyle).getLeftBorderXSSFColor());
 			} else if(wb instanceof HSSFWorkbook) {
 				HSSFFont hf = ((HSSFCellStyle) cellStyle).getFont(wb);
 				short boldWeight = hf.getFontHeight();
@@ -565,7 +565,7 @@ public class XlsxToHtml {
 		try {
 			file2.createNewFile();
 			sb.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>" + name + "</title><style type=\"text/css\">");
-			sb.append("ul{list-style; none;max-widht: calc(100%);padding: 0px;margin: 0px;overflow-x: scroll;white-space: nowrap;} ul li{padding: 3px 5px;display: inline-block;border-right: 1px solid #768893;} ul li.cur{color: #F59C25;} table{border-collapse: collapse;display: none;width: 100%;} table.block{display: block;}");
+			sb.append("ul{list-style; none;max-width: calc(100%);padding: 0px;margin: 0px;overflow-x: scroll;white-space: nowrap;} ul li{padding: 3px 5px;display: inline-block;border-right: 1px solid #768893;} ul li.cur{color: #F59C25;} table{border-collapse:collapse;display:none;width:100%;} table.block{display: block;}");
 			for(Map.Entry<String, String> entry : stylemap.entrySet()) {
 				String mapKey = entry.getKey();
 				String mapValue = entry.getValue();
@@ -590,7 +590,7 @@ public class XlsxToHtml {
 		try {
 			file2.createNewFile();
 			sb.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"><title>" + name + "</title><style type=\"text/css\">");
-			sb.append("ul{list-style; none;max-widht: calc(100%);padding: 0px;margin: 0px;overflow-x: scroll;white-space: nowrap;} ul li{padding: 3px 5px;display: inline-block;border-right: 1px solid #768893;} ul li.cur{color: #F59C25;} table{border-collapse: collapse;width: 100%;} td{border: solid #000000 1px; min-width: 200px;}");
+			sb.append("ul{list-style: none;max-width: calc(100%);padding: 0px;margin: 0px;overflow-x: scroll;white-space: nowrap;} ul li{padding: 3px 5px;display: inline-block;border-right: 1px solid #768893;} ul li.cur{color: #F59C25;} table{border-collapse:collapse;width:100%;} td{border: solid #000000 1px; min-width: 200px;}");
 			sb.append("</style></head><body>");
 			sb.append("<div>");
 			sb.append(content);

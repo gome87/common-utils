@@ -1,5 +1,9 @@
 package com.lifeone.utils;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,17 +13,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.lifeone.utils.poi2.DocxToPdf;
-import com.lifeone.utils.poi2.PptToPng;
-import com.lifeone.utils.poi2.PptxToPng;
-import com.lifeone.utils.poi2.XlsToHtml;
-import com.lifeone.utils.poi2.XlsxToHtml;
-import com.lifeone.utils.poi2.XlsxToPDF;
-
 @Controller
 public class OfficeController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(OfficeController.class);
+
+	/**
+	 * Office -> HTML 테스트용
+	 *
+	 * @param HttpServletRequest  req
+	 * @param HttpServletResponse rep
+	 * @return
+	 * @throws Exception
+	 * @since 2024. 02. 23
+	 * @author 김영우
+	 */
+	@RequestMapping(value = "/office", method = { RequestMethod.GET })
+	public void retrieveOfficeChange(HttpServletRequest req, HttpServletResponse res) throws Exception {
+
+
+	}
 
 	/**
 	 * Office -> HTML/XHTML/PDF -> Image(PNG)
@@ -59,8 +72,44 @@ public class OfficeController {
 		//convert.xlsxToHtml("C:\\fileupload\\convert_after\\2023학년도 1학기 생활디자인학과 시간표(안).xlsx", null, null, "C:\\fileupload\\convert_before\\2023학년도 1학기 생활디자인학과 시간표(안).pdf");
 		//convert.convertExcelToPDF("C:\\fileupload\\convert_after\\2023학년도 1학기 생활디자인학과 시간표(안).xlsx", "C:\\fileupload\\convert_before\\2023학년도 1학기 생활디자인학과 시간표(안).pdf");
 
-		XlsxToHtml convert = new XlsxToHtml();
-		convert.readExcelToHtml("C:\\fileupload\\convert_after\\대학강의시간표.xls", "C:\\fileupload\\convert_html\\대학강의시간표.html", false, "xlsx", "대학강의시간표");
+		//XlsxToHtml convert = new XlsxToHtml();
+		//convert.readExcelToHtml("C:\\fileupload\\convert_after\\대학강의시간표.xls", "C:\\fileupload\\convert_html\\대학강의시간표.html", false, "xlsx", "대학강의시간표");
 		//convert.readExcelToHtml("C:\\fileupload\\convert_after\\2023학년도 1학기 생활디자인학과 시간표(안).xlsx", "C:\\fileupload\\convert_html\\2023학년도 1학기 생활디자인학과 시간표(안).html", true, "xlsx", "2023학년도 1학기 생활디자인학과 시간표(안)");
 	}
+
+	/**
+	 * filePath search
+	 *
+	 * @param HttpServletRequest  req
+	 * @param HttpServletResponse rep
+	 * @return
+	 * @throws Exception
+	 * @since 2024. 02. 23
+	 * @author 김영우
+	 */
+	@RequestMapping(value = "/filePathSearch", method = { RequestMethod.GET })
+	public void retrieveFilePathSearch(HttpServletRequest req, HttpServletResponse res) throws Exception {
+		List<String> fileLst = new ArrayList<> ();
+
+		this.scanDir("C:\\fileupload", fileLst);	// 테스트용 임시 폴더
+
+		for(String fullPath : fileLst) {
+			LOG.info("##### File List : {} #####", fullPath);
+		}
+	}
+
+	// 재귀 호출을 이용하여 하위 폴더 탐색
+	private void scanDir(String sFolderPath, List<String> fileList) {
+
+		File[] files = new File(sFolderPath).listFiles();
+
+		for(File fileElement : files) {
+			if(fileElement.isDirectory()) {
+				scanDir(fileElement.getAbsolutePath(), fileList);
+			} else {
+				fileList.add(fileElement.getAbsolutePath());
+			}
+		}
+	}
+
 }
