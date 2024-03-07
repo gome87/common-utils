@@ -314,7 +314,7 @@ public class XlsxToHtml {
 		}
 		ulsb.append("</ul>");
 
-		return ulsb+toString() + sb.toString();
+		return ulsb.toString() + sb.toString();
 	}
 
 	private Map<String, String>[] getRowSpanColSpanMap(Sheet sheet) {
